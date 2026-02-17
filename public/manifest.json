@@ -1,0 +1,33 @@
+{
+  "name": "إمساكية - أوقات الصلاة رمضان",
+  "short_name": "إمساكية",
+  "description": "إمساكية رمضان الرقمية لتونس - أوقات الصلاة والعد التنازلي",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#D4A843",
+  "background_color": "#0A0E1A",
+  "dir": "rtl",
+  "lang": "ar",
+  "categories": ["lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

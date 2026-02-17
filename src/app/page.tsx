@@ -1,65 +1,88 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { Loader2 } from "lucide-react";
+import { Coordinates } from "@/types";
+import { useTranslation } from "@/lib/i18n/context";
+import { usePrayerTimes } from "@/hooks/usePrayerTimes";
+import LocationGate from "@/components/home/LocationGate";
+import CountdownCircle from "@/components/home/CountdownCircle";
+import ActivePrayerHighlight from "@/components/home/ActivePrayerHighlight";
+import FastingCard from "@/components/home/FastingCard";
+import GlassCard from "@/components/ui/GlassCard";
+import ShareButton from "@/components/home/ShareButton";
+
+function HomeContent({ coords }: { coords: Coordinates; cityName: string }) {
+  const { data, error, isLoading, isStale } = usePrayerTimes(coords);
+  const { t } = useTranslation();
+
+  if (error && !data) {
+    return (
+      <GlassCard className="p-6 text-center">
+        <p className="text-danger">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 rounded-lg bg-card-lighter px-4 py-2 text-sm text-off-white hover:bg-gold-dim"
+        >
+          {t("common.retry")}
+        </button>
+      </GlassCard>
+    );
+  }
+
+  if (isLoading && !data) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-gold" />
+      </div>
+    );
+  }
+
+  if (!data) return null;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="space-y-6 animate-fade-in">
+      {/* Stale data indicator */}
+      {isStale && (
+        <div className="text-center text-xs text-slate-gray">
+          {t("common.loading")}
+        </div>
+      )}
+
+      {/* Countdown Circle */}
+      <section>
+        <CountdownCircle timings={data.timings} />
+      </section>
+
+      {/* Fasting Card */}
+      <section>
+        <FastingCard
+          timings={data.timings}
+          ramadanDay={data.ramadanDay}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      </section>
+
+      {/* Prayer Times Grid */}
+      <section>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-medium text-slate-gray">
+            {t("home.prayerTimes")}
+          </h2>
+          <ShareButton timings={data.timings} ramadanDay={data.ramadanDay} />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <GlassCard className="p-3">
+          <ActivePrayerHighlight timings={data.timings} />
+        </GlassCard>
+      </section>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <LocationGate>
+      {(coords, cityName) => (
+        <HomeContent coords={coords} cityName={cityName} />
+      )}
+    </LocationGate>
   );
 }

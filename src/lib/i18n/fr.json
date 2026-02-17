@@ -1,0 +1,194 @@
+{
+  "app": {
+    "name": "Imsakia",
+    "tagline": "Votre compagnon du Ramadan",
+    "description": "Horaires de prière et imsakia digitale pour la Tunisie"
+  },
+  "nav": {
+    "home": "Accueil",
+    "calendar": "Calendrier",
+    "qibla": "Qibla",
+    "adhkar": "Adhkar",
+    "more": "Plus"
+  },
+  "home": {
+    "nextPrayer": "Prochaine prière",
+    "timeUntilImsak": "Temps restant avant l'Imsak",
+    "timeUntilIftar": "Temps restant avant l'Iftar",
+    "prayerTimes": "Horaires de prière",
+    "fasting": "Jeûne",
+    "fastingDuration": "Durée du jeûne",
+    "day": "Jour",
+    "of": "sur",
+    "ramadan": "Ramadan",
+    "hours": "heures",
+    "minutes": "minutes",
+    "locationRequired": "Nous avons besoin de votre position pour calculer les horaires",
+    "allowLocation": "Autoriser la localisation",
+    "chooseCity": "Choisissez votre ville",
+    "searchCity": "Rechercher une ville..."
+  },
+  "prayers": {
+    "imsak": "Imsak",
+    "fajr": "Fajr",
+    "sunrise": "Lever du soleil",
+    "dhuhr": "Dhuhr",
+    "asr": "Asr",
+    "maghrib": "Maghrib",
+    "isha": "Isha"
+  },
+  "calendar": {
+    "title": "Calendrier du Ramadan",
+    "hijriDay": "Jour Hijri",
+    "gregorianDate": "Date",
+    "imsakTime": "Imsak",
+    "maghribTime": "Maghrib",
+    "fastingDuration": "Durée du jeûne",
+    "today": "Aujourd'hui",
+    "lastTenNights": "10 dernières nuits",
+    "laylatAlQadr": "Laylat al-Qadr"
+  },
+  "qibla": {
+    "title": "Direction de la Qibla",
+    "angle": "Angle",
+    "distance": "Distance vers la Mecque",
+    "km": "km",
+    "enableCompass": "Activer la boussole",
+    "permissionNeeded": "Permission requise pour le capteur d'orientation",
+    "notSupported": "La boussole n'est pas supportée sur cet appareil"
+  },
+  "adhkar": {
+    "title": "Adhkar du Ramadan",
+    "duaIftar": "Dua de l'Iftar",
+    "duaSuhoor": "Dua du Suhoor",
+    "source": "Source",
+    "transliteration": "Translittération",
+    "translation": "Traduction",
+    "premium": "Plus d'adhkar disponibles dans la version premium",
+    "unlockMore": "Débloquer plus",
+    "repeat": "Répétition",
+    "reset": "Réinitialiser",
+    "contextual": "Suggéré pour vous maintenant",
+    "noResults": "Aucun adhkar dans cette catégorie",
+    "categories": {
+      "all": "Tous",
+      "iftar": "Iftar",
+      "suhoor": "Suhoor",
+      "morning": "Matin",
+      "evening": "Soir",
+      "postPrayer": "Après la prière",
+      "sleep": "Sommeil",
+      "general": "Général",
+      "laylatalQadr": "Laylat al-Qadr"
+    }
+  },
+  "premium": {
+    "title": "Nos offres",
+    "free": "Gratuit",
+    "premiumPlan": "Premium",
+    "vip": "VIP",
+    "comingSoon": "Bientôt disponible",
+    "subscribe": "S'abonner maintenant",
+    "currentPlan": "Votre offre actuelle",
+    "features": {
+      "prayerTimes": "Horaires de prière",
+      "countdown": "Compte à rebours",
+      "calendar": "Calendrier mensuel",
+      "qibla": "Direction Qibla",
+      "basicAdhkar": "Adhkar de base",
+      "allAdhkar": "Tous les adhkar",
+      "notifications": "Alertes de prière",
+      "widgets": "Widget écran",
+      "noAds": "Sans publicité",
+      "customThemes": "Thèmes personnalisés"
+    },
+    "success": {
+      "title": "Abonnement réussi !",
+      "message": "Merci ! Vous pouvez maintenant profiter de toutes les fonctionnalités.",
+      "redirecting": "Redirection en cours..."
+    }
+  },
+  "auth": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "signInWith": "Se connecter avec",
+    "email": "Email",
+    "emailPlaceholder": "exemple@email.com",
+    "sendMagicLink": "Envoyer le lien magique",
+    "google": "Google",
+    "verifyTitle": "Vérifiez votre email",
+    "verifyMessage": "Un lien de connexion a été envoyé à votre email. Veuillez vérifier votre boîte de réception.",
+    "errorTitle": "Erreur d'authentification",
+    "errorMessage": "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
+    "backToSignIn": "Retour à la connexion"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "city": "Ville",
+    "language": "Langue",
+    "notifications": "Notifications",
+    "notificationsDesc": "Gérer les alertes de prière",
+    "account": "Compte",
+    "premium": "Offre",
+    "theme": "Thème"
+  },
+  "themes": {
+    "nightGold": "Night Gold",
+    "emerald": "Emerald",
+    "light": "Light",
+    "midnightBlue": "Midnight Blue",
+    "roseGold": "Rose Gold"
+  },
+  "notifications": {
+    "title": "Alertes de prière",
+    "enable": "Activer les notifications",
+    "enableDesc": "Recevez des alertes avant chaque prière",
+    "fajr": "Fajr",
+    "dhuhr": "Dhuhr",
+    "asr": "Asr",
+    "maghrib": "Maghrib",
+    "isha": "Isha",
+    "delay": "Avant l'adhan de",
+    "minutes": "minutes",
+    "freeLimit": "Offre gratuite : alerte Maghrib uniquement",
+    "premiumAll": "Offre premium : toutes les prières",
+    "permissionDenied": "Veuillez autoriser les notifications dans les paramètres du navigateur",
+    "subscribed": "Notifications activées",
+    "unsubscribed": "Notifications désactivées"
+  },
+  "about": {
+    "title": "À propos d'Imsakia",
+    "mission": "Notre mission",
+    "missionText": "Nous visons à fournir une imsakia digitale précise et belle pour tous les Tunisiens durant le mois sacré de Ramadan.",
+    "calculationMethod": "Méthode de calcul",
+    "calculationText": "Nous utilisons la méthode du Ministère des Affaires Religieuses de Tunisie (Méthode 16) via l'API AlAdhan.",
+    "credits": "Remerciements",
+    "creditsText": "Les données des horaires de prière sont fournies par l'API AlAdhan."
+  },
+  "offline": {
+    "title": "Vous êtes hors ligne",
+    "message": "Veuillez vérifier votre connexion internet et réessayer.",
+    "retry": "Réessayer"
+  },
+  "share": {
+    "button": "Partager les horaires",
+    "title": "Horaires de prière du jour",
+    "downloaded": "Image enregistrée"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite",
+    "retry": "Réessayer"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "language": "Langue",
+    "arabic": "عربي",
+    "french": "Français",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "back": "Retour"
+  }
+}

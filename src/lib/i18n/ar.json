@@ -1,0 +1,194 @@
+{
+  "app": {
+    "name": "إمساكية",
+    "tagline": "رفيقك في رمضان",
+    "description": "أوقات الصلاة والإمساكية الرقمية لتونس"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "calendar": "التقويم",
+    "qibla": "القبلة",
+    "adhkar": "أذكار",
+    "more": "المزيد"
+  },
+  "home": {
+    "nextPrayer": "الصلاة القادمة",
+    "timeUntilImsak": "الوقت المتبقي للإمساك",
+    "timeUntilIftar": "الوقت المتبقي للإفطار",
+    "prayerTimes": "أوقات الصلاة",
+    "fasting": "الصيام",
+    "fastingDuration": "مدة الصيام",
+    "day": "اليوم",
+    "of": "من",
+    "ramadan": "رمضان",
+    "hours": "ساعة",
+    "minutes": "دقيقة",
+    "locationRequired": "نحتاج موقعك لحساب أوقات الصلاة",
+    "allowLocation": "السماح بالموقع",
+    "chooseCity": "اختر مدينتك",
+    "searchCity": "ابحث عن مدينة..."
+  },
+  "prayers": {
+    "imsak": "الإمساك",
+    "fajr": "الفجر",
+    "sunrise": "الشروق",
+    "dhuhr": "الظهر",
+    "asr": "العصر",
+    "maghrib": "المغرب",
+    "isha": "العشاء"
+  },
+  "calendar": {
+    "title": "تقويم رمضان",
+    "hijriDay": "اليوم الهجري",
+    "gregorianDate": "التاريخ",
+    "imsakTime": "الإمساك",
+    "maghribTime": "المغرب",
+    "fastingDuration": "مدة الصيام",
+    "today": "اليوم",
+    "lastTenNights": "العشر الأواخر",
+    "laylatAlQadr": "ليلة القدر"
+  },
+  "qibla": {
+    "title": "اتجاه القبلة",
+    "angle": "الزاوية",
+    "distance": "المسافة إلى مكة",
+    "km": "كم",
+    "enableCompass": "تفعيل البوصلة",
+    "permissionNeeded": "نحتاج إذن استخدام مستشعر الاتجاه",
+    "notSupported": "البوصلة غير مدعومة على هذا الجهاز"
+  },
+  "adhkar": {
+    "title": "أذكار رمضان",
+    "duaIftar": "دعاء الإفطار",
+    "duaSuhoor": "دعاء السحور",
+    "source": "المصدر",
+    "transliteration": "النطق",
+    "translation": "الترجمة",
+    "premium": "أذكار إضافية متاحة في النسخة المدفوعة",
+    "unlockMore": "فتح المزيد",
+    "repeat": "التكرار",
+    "reset": "إعادة تعيين",
+    "contextual": "مقترح لك الآن",
+    "noResults": "لا توجد أذكار في هذه الفئة",
+    "categories": {
+      "all": "الكل",
+      "iftar": "الإفطار",
+      "suhoor": "السحور",
+      "morning": "الصباح",
+      "evening": "المساء",
+      "postPrayer": "بعد الصلاة",
+      "sleep": "النوم",
+      "general": "عام",
+      "laylatalQadr": "ليلة القدر"
+    }
+  },
+  "premium": {
+    "title": "الباقات",
+    "free": "مجاني",
+    "premiumPlan": "مميز",
+    "vip": "VIP",
+    "comingSoon": "قريبًا",
+    "subscribe": "اشترك الآن",
+    "currentPlan": "باقتك الحالية",
+    "features": {
+      "prayerTimes": "أوقات الصلاة",
+      "countdown": "العد التنازلي",
+      "calendar": "التقويم الشهري",
+      "qibla": "اتجاه القبلة",
+      "basicAdhkar": "أذكار أساسية",
+      "allAdhkar": "جميع الأذكار",
+      "notifications": "تنبيهات الصلاة",
+      "widgets": "ودجت للشاشة",
+      "noAds": "بدون إعلانات",
+      "customThemes": "سمات مخصصة"
+    },
+    "success": {
+      "title": "تم الاشتراك بنجاح!",
+      "message": "شكرًا لك! يمكنك الآن الاستمتاع بجميع الميزات.",
+      "redirecting": "جاري التحويل..."
+    }
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "signInWith": "تسجيل الدخول عبر",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "example@email.com",
+    "sendMagicLink": "إرسال رابط الدخول",
+    "google": "Google",
+    "verifyTitle": "تحقق من بريدك",
+    "verifyMessage": "تم إرسال رابط الدخول إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.",
+    "errorTitle": "خطأ في المصادقة",
+    "errorMessage": "حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+    "backToSignIn": "العودة لتسجيل الدخول"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "city": "المدينة",
+    "language": "اللغة",
+    "notifications": "الإشعارات",
+    "notificationsDesc": "إدارة تنبيهات الصلاة",
+    "account": "الحساب",
+    "premium": "الباقة",
+    "theme": "السمة"
+  },
+  "themes": {
+    "nightGold": "الذهبي الليلي",
+    "emerald": "الزمردي",
+    "light": "الفاتح",
+    "midnightBlue": "الأزرق الداكن",
+    "roseGold": "الوردي الذهبي"
+  },
+  "notifications": {
+    "title": "تنبيهات الصلاة",
+    "enable": "تفعيل الإشعارات",
+    "enableDesc": "استقبل تنبيهات قبل كل صلاة",
+    "fajr": "الفجر",
+    "dhuhr": "الظهر",
+    "asr": "العصر",
+    "maghrib": "المغرب",
+    "isha": "العشاء",
+    "delay": "قبل الأذان بـ",
+    "minutes": "دقيقة",
+    "freeLimit": "الباقة المجانية: تنبيه المغرب فقط",
+    "premiumAll": "الباقة المميزة: جميع الصلوات",
+    "permissionDenied": "يرجى السماح بالإشعارات من إعدادات المتصفح",
+    "subscribed": "تم تفعيل الإشعارات",
+    "unsubscribed": "تم إيقاف الإشعارات"
+  },
+  "about": {
+    "title": "عن إمساكية",
+    "mission": "مهمتنا",
+    "missionText": "نهدف إلى تقديم إمساكية رقمية دقيقة وجميلة لجميع التونسيين خلال شهر رمضان المبارك.",
+    "calculationMethod": "طريقة الحساب",
+    "calculationText": "نستخدم طريقة وزارة الشؤون الدينية التونسية (Method 16) عبر واجهة AlAdhan API.",
+    "credits": "شكر خاص",
+    "creditsText": "بيانات أوقات الصلاة مقدمة من AlAdhan API."
+  },
+  "offline": {
+    "title": "أنت غير متصل",
+    "message": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+    "retry": "إعادة المحاولة"
+  },
+  "share": {
+    "button": "مشاركة الأوقات",
+    "title": "أوقات صلاة اليوم",
+    "downloaded": "تم حفظ الصورة"
+  },
+  "errors": {
+    "generic": "حدث خطأ",
+    "retry": "إعادة المحاولة"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "retry": "إعادة المحاولة",
+    "close": "إغلاق",
+    "language": "اللغة",
+    "arabic": "عربي",
+    "french": "Français",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "رجوع"
+  }
+}
