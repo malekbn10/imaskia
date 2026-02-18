@@ -73,24 +73,57 @@ export default function CardsPage() {
   const ramadanDay = getRamadanDay();
   const todayDua = dailyDuas[(ramadanDay - 1) % 30];
 
+  const captureCard = async (): Promise<Blob | null> => {
+    if (!cardRef.current) return null;
+    const html2canvas = (await import("html2canvas")).default;
+    const canvas = await html2canvas(cardRef.current, {
+      scale: 2,
+      backgroundColor: "#0A0E1A",
+      logging: false,
+      useCORS: true,
+    });
+    return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+  };
+
   const handleDownload = async () => {
-    if (!cardRef.current) return;
     try {
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, { scale: 2 });
+      const blob = await captureCard();
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.download = `imsakia-card-${Date.now()}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.href = url;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     } catch {
       // Silently fail
     }
   };
 
   const handleWhatsApp = async () => {
-    await handleDownload();
-    const text = encodeURIComponent(`${t("app.name")} — ${t("cards.title")}`);
-    window.open(`https://wa.me/?text=${text}`, "_blank");
+    try {
+      const blob = await captureCard();
+      if (!blob) return;
+
+      // Try sharing file via Web Share API
+      if (navigator.share && navigator.canShare) {
+        const file = new File([blob], "imsakia-card.png", { type: "image/png" });
+        const shareData = { files: [file], title: t("cards.title") };
+        if (navigator.canShare(shareData)) {
+          await navigator.share(shareData);
+          return;
+        }
+      }
+
+      // Fallback: download then open WhatsApp
+      await handleDownload();
+      const text = encodeURIComponent(`${t("app.name")} — ${t("cards.title")}`);
+      window.open(`https://wa.me/?text=${text}`, "_blank");
+    } catch {
+      // User cancelled or error
+    }
   };
 
   const tabs: { key: Tab; label: string }[] = [

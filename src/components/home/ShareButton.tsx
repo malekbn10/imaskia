@@ -22,12 +22,22 @@ export default function ShareButton({ timings, ramadanDay, cityName }: ShareButt
     setLoading(true);
 
     try {
+      // Temporarily make visible for html2canvas capture
+      const el = cardRef.current;
+      el.style.opacity = "1";
+
       const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, {
+      const canvas = await html2canvas(el, {
         scale: 2,
-        backgroundColor: null,
+        backgroundColor: "#0A0E1A",
         logging: false,
+        useCORS: true,
+        width: 600,
+        height: 900,
       });
+
+      // Hide again
+      el.style.opacity = "0";
 
       const blob = await new Promise<Blob | null>((resolve) =>
         canvas.toBlob(resolve, "image/png")

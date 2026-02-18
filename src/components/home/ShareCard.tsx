@@ -37,9 +37,12 @@ const ShareCard = forwardRef<HTMLDivElement, ShareCardProps>(
           padding: 40,
           display: "flex",
           flexDirection: "column",
-          position: "absolute",
-          left: -9999,
-          top: -9999,
+          position: "fixed",
+          left: 0,
+          top: 0,
+          zIndex: -1,
+          opacity: 0,
+          pointerEvents: "none",
         }}
       >
         {/* Header */}
