@@ -13,7 +13,8 @@ interface FastingCardProps {
 
 export default function FastingCard({ timings, ramadanDay, totalDays = 30 }: FastingCardProps) {
   const { duration } = getFastingDuration(timings.Imsak, timings.Maghrib);
-  const progress = Math.min((ramadanDay / totalDays) * 100, 100);
+  const displayDay = Math.max(ramadanDay, 0);
+  const progress = displayDay > 0 ? Math.min((displayDay / totalDays) * 100, 100) : 0;
   const { t } = useTranslation();
 
   return (
@@ -28,7 +29,9 @@ export default function FastingCard({ timings, ramadanDay, totalDays = 30 }: Fas
       {/* Ramadan day progress */}
       <div className="mb-2 flex items-center justify-between text-xs text-slate-gray">
         <span>
-          {t("home.day")} {ramadanDay} {t("home.of")} {totalDays}
+          {displayDay > 0
+            ? `${t("home.day")} ${displayDay} ${t("home.of")} ${totalDays}`
+            : t("home.ramadan")}
         </span>
         <span>{Math.round(progress)}%</span>
       </div>

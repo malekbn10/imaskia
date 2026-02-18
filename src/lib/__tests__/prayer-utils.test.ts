@@ -104,16 +104,32 @@ describe("getFastingDuration", () => {
 });
 
 describe("getRamadanDay", () => {
-  it("parses valid day", () => {
-    expect(getRamadanDay("15")).toBe(15);
+  it("returns 0 before Ramadan starts", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 1, 18)); // Feb 18 — day before Ramadan
+    expect(getRamadanDay()).toBe(0);
+    vi.useRealTimers();
   });
 
-  it("defaults to 1 for invalid input", () => {
-    expect(getRamadanDay("")).toBe(1);
+  it("returns 1 on the first day of Ramadan", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 1, 19)); // Feb 19 — Ramadan day 1
+    expect(getRamadanDay()).toBe(1);
+    vi.useRealTimers();
   });
 
-  it("defaults to 1 for NaN", () => {
-    expect(getRamadanDay("abc")).toBe(1);
+  it("returns correct day mid-Ramadan", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 2, 5)); // Mar 5 — Ramadan day 15
+    expect(getRamadanDay()).toBe(15);
+    vi.useRealTimers();
+  });
+
+  it("caps at 30", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 3, 1)); // Apr 1 — well past Ramadan
+    expect(getRamadanDay()).toBe(30);
+    vi.useRealTimers();
   });
 });
 

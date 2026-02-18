@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { MapPin, Loader2 } from "lucide-react";
 import { Coordinates, City } from "@/types";
 import { getCoords, setCoords, getCityId, setCityId } from "@/lib/storage";
-import { findNearestCity, getCityById, getCityCoords } from "@/lib/geo";
+import { findNearestCityRemote, getCityCoords } from "@/lib/geo";
 import { useTranslation } from "@/lib/i18n/context";
 import CityCombobox from "@/components/ui/CityCombobox";
 import GlassCard from "@/components/ui/GlassCard";
@@ -20,15 +20,34 @@ export default function LocationGate({ children }: LocationGateProps) {
   const [showPicker, setShowPicker] = useState(false);
   const { lang, t } = useTranslation();
 
+  // Resolve stored coords → city name via API
   useEffect(() => {
     const stored = getCoords();
     const storedCityId = getCityId();
+
     if (stored) {
       setLocalCoords(stored);
-      // Use stored city ID for direct lookup, fallback to nearest city
-      const city = (storedCityId ? getCityById(storedCityId) : undefined) ?? findNearestCity(stored.lat, stored.lng);
-      setCityName(lang === "ar" ? city.nameAr : city.nameFr);
-      setLoading(false);
+
+      // If we already have a stored city name, use it instantly
+      if (storedCityId) {
+        // storedCityId is now the full city display name, not just an ID
+        setCityName(storedCityId);
+        setLoading(false);
+        // Also resolve from API in background for accuracy
+        findNearestCityRemote(stored.lat, stored.lng).then((city) => {
+          const name = lang === "ar" ? city.nameAr : city.nameFr;
+          setCityName(name);
+          setCityId(name);
+        });
+      } else {
+        // No stored city — resolve from API
+        findNearestCityRemote(stored.lat, stored.lng).then((city) => {
+          const name = lang === "ar" ? city.nameAr : city.nameFr;
+          setCityName(name);
+          setCityId(name);
+          setLoading(false);
+        });
+      }
     } else {
       setLoading(false);
     }
@@ -37,13 +56,15 @@ export default function LocationGate({ children }: LocationGateProps) {
   const requestGeolocation = useCallback(() => {
     setLoading(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
         const newCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         setCoords(newCoords);
         setLocalCoords(newCoords);
-        const city = findNearestCity(newCoords.lat, newCoords.lng);
-        setCityId(city.id);
-        setCityName(lang === "ar" ? city.nameAr : city.nameFr);
+
+        const city = await findNearestCityRemote(newCoords.lat, newCoords.lng);
+        const name = lang === "ar" ? city.nameAr : city.nameFr;
+        setCityId(name);
+        setCityName(name);
         setLoading(false);
       },
       () => {
@@ -58,9 +79,10 @@ export default function LocationGate({ children }: LocationGateProps) {
     (city: City) => {
       const newCoords = getCityCoords(city);
       setCoords(newCoords);
-      setCityId(city.id);
+      const name = lang === "ar" ? city.nameAr : city.nameFr;
+      setCityId(name);
       setLocalCoords(newCoords);
-      setCityName(lang === "ar" ? city.nameAr : city.nameFr);
+      setCityName(name);
       setShowPicker(false);
     },
     [lang]

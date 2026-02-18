@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, Loader2 } from "lucide-react";
 import { City } from "@/types";
-import { searchCities } from "@/lib/geo";
+import { searchCitiesAsync } from "@/lib/geo";
 import { useTranslation } from "@/lib/i18n/context";
 
 interface CityComboboxProps {
@@ -12,16 +12,32 @@ interface CityComboboxProps {
 
 export default function CityCombobox({ onSelect }: CityComboboxProps) {
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<City[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const { lang, t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  const results = searchCities(query).slice(0, 10);
-
+  // Load initial cities on mount
   useEffect(() => {
-    setActiveIndex(0);
+    searchCitiesAsync("").then((cities) => setResults(cities.slice(0, 15)));
+  }, []);
+
+  // Debounced search
+  useEffect(() => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setIsSearching(true);
+      searchCitiesAsync(query).then((cities) => {
+        setResults(cities.slice(0, 15));
+        setActiveIndex(0);
+        setIsSearching(false);
+      });
+    }, 200);
+    return () => clearTimeout(debounceRef.current);
   }, [query]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -50,10 +66,17 @@ export default function CityCombobox({ onSelect }: CityComboboxProps) {
   return (
     <div className="relative w-full">
       <div className="relative">
-        <Search
-          size={18}
-          className="absolute top-1/2 -translate-y-1/2 text-slate-gray ltr:left-3 rtl:right-3"
-        />
+        {isSearching ? (
+          <Loader2
+            size={18}
+            className="absolute top-1/2 -translate-y-1/2 animate-spin text-gold ltr:left-3 rtl:right-3"
+          />
+        ) : (
+          <Search
+            size={18}
+            className="absolute top-1/2 -translate-y-1/2 text-slate-gray ltr:left-3 rtl:right-3"
+          />
+        )}
         <input
           ref={inputRef}
           type="text"
@@ -82,7 +105,7 @@ export default function CityCombobox({ onSelect }: CityComboboxProps) {
         >
           {results.map((city, idx) => (
             <li
-              key={city.id}
+              key={`${city.id}-${idx}`}
               id={`city-${idx}`}
               role="option"
               aria-selected={idx === activeIndex}

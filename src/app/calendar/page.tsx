@@ -1,39 +1,73 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { DayInfo } from "@/types";
 import { useTranslation } from "@/lib/i18n/context";
 import { getCoords } from "@/lib/storage";
-import RamadanTable from "@/components/calendar/RamadanTable";
+import { RAMADAN_START, RAMADAN_DAYS } from "@/lib/prayer-utils";
 import GlassCard from "@/components/ui/GlassCard";
+import RamadanList from "@/components/calendar/RamadanList";
+
+/** Build the set of DD-MM-YYYY strings for the 30 Ramadan days */
+function getRamadanDateSet(): Set<string> {
+  const dates = new Set<string>();
+  for (let i = 0; i < RAMADAN_DAYS; i++) {
+    const d = new Date(RAMADAN_START);
+    d.setDate(d.getDate() + i);
+    const dd = String(d.getDate()).padStart(2, "0");
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    dates.add(`${dd}-${mm}-${d.getFullYear()}`);
+  }
+  return dates;
+}
 
 export default function CalendarPage() {
   const [days, setDays] = useState<DayInfo[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
+  const fetched = useRef(false);
 
   useEffect(() => {
-    async function fetchCalendar() {
+    if (fetched.current) return;
+    fetched.current = true;
+
+    async function fetchRamadanDays() {
       const coords = getCoords();
       if (!coords) {
-        setError("يرجى تحديد موقعك أولاً من الصفحة الرئيسية");
+        setError(t("home.locationRequired"));
         return;
       }
 
       try {
-        const now = new Date();
-        const res = await fetch(
-          `/api/calendar?lat=${coords.lat}&lng=${coords.lng}&month=${now.getMonth() + 1}&year=${now.getFullYear()}`
+        // Ramadan 2026 spans February + March
+        const [resFeb, resMar] = await Promise.all([
+          fetch(`/api/calendar?lat=${coords.lat}&lng=${coords.lng}&month=2&year=2026`),
+          fetch(`/api/calendar?lat=${coords.lat}&lng=${coords.lng}&month=3&year=2026`),
+        ]);
+
+        if (!resFeb.ok || !resMar.ok) throw new Error("Failed");
+
+        const febJson = await resFeb.json();
+        const marJson = await resMar.json();
+
+        const allDays: DayInfo[] = [
+          ...(febJson.data as DayInfo[]),
+          ...(marJson.data as DayInfo[]),
+        ];
+
+        // Filter by official Ramadan dates (not Hijri month)
+        const ramadanDates = getRamadanDateSet();
+        const ramadanDays = allDays.filter((d) =>
+          ramadanDates.has(d.date.gregorian.date)
         );
-        if (!res.ok) throw new Error("Failed");
-        const json = await res.json();
-        setDays(json.data as DayInfo[]);
+
+        setDays(ramadanDays);
       } catch {
         setError(t("common.error"));
       }
     }
-    fetchCalendar();
+    fetchRamadanDays();
   }, [t]);
 
   return (
@@ -43,7 +77,7 @@ export default function CalendarPage() {
       {/* Legend */}
       <div className="flex flex-wrap items-center gap-4 text-xs text-slate-gray">
         <span className="flex items-center gap-1">
-          <span className="inline-block h-3 w-3 rounded-sm bg-gold/10 border border-gold/30" />
+          <span className="inline-block h-3 w-3 rounded-sm bg-gold/20 border border-gold/40" />
           {t("calendar.today")}
         </span>
         <span className="flex items-center gap-1">
@@ -67,7 +101,7 @@ export default function CalendarPage() {
         </div>
       )}
 
-      {days && <RamadanTable days={days} />}
+      {days && <RamadanList days={days} />}
     </div>
   );
 }

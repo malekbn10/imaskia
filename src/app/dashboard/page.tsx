@@ -3,7 +3,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Check, Flame, Share2, BarChart3 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
-import { toggleWorshipItem, getDayItems, getStreak, getWeeklyStats } from "@/lib/storage";
+import {
+  toggleWorshipItem,
+  getDayItems,
+  getStreak,
+  getWeeklyStats,
+} from "@/lib/storage";
 import GlassCard from "@/components/ui/GlassCard";
 
 const WORSHIP_ITEMS = [
@@ -92,13 +97,20 @@ export default function DashboardPage() {
             <div>
               <p className="text-sm text-slate-gray">{t("dashboard.streak")}</p>
               <p className="text-2xl font-bold text-warning">
-                {streak} <span className="text-sm font-normal">{t("dashboard.streakDays")}</span>
+                {streak}{" "}
+                <span className="text-sm font-normal">
+                  {t("dashboard.streakDays")}
+                </span>
               </p>
             </div>
           </div>
           <div className="text-center">
             <p className="text-sm text-slate-gray">{t("dashboard.progress")}</p>
-            <p className={`text-2xl font-bold ${allDone ? "text-mint" : "text-gold"}`}>{progress}%</p>
+            <p
+              className={`text-2xl font-bold ${allDone ? "text-mint" : "text-gold"}`}
+            >
+              {progress}%
+            </p>
           </div>
         </GlassCard>
 
@@ -125,7 +137,9 @@ export default function DashboardPage() {
                 }`}
               >
                 <span className="text-lg">{emoji}</span>
-                <span className="flex-1 text-start">{t(`dashboard.items.${id}`)}</span>
+                <span className="flex-1 text-start">
+                  {t(`dashboard.items.${id}`)}
+                </span>
                 <div
                   className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all ${
                     checked ? "border-mint bg-mint" : "border-slate-gray/30"
@@ -157,7 +171,9 @@ export default function DashboardPage() {
       {/* Weekly stats */}
       {showStats && (
         <GlassCard className="space-y-3 p-5 animate-fade-in">
-          <h2 className="text-sm font-semibold text-off-white">{t("dashboard.weeklyStats")}</h2>
+          <h2 className="text-sm font-semibold text-off-white">
+            {t("dashboard.weeklyStats")}
+          </h2>
           {WORSHIP_ITEMS.map(({ id, emoji }) => {
             const count = weeklyStats[id] ?? 0;
             const pct = Math.round((count / 7) * 100);

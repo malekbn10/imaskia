@@ -2,6 +2,14 @@ import { PrayerTimings, PrayerKey, ActivePrayer, FastingInfo } from "@/types";
 import { MAIN_PRAYERS } from "@/lib/i18n/prayer-names";
 
 /**
+ * Official Ramadan 2026 start date for Tunisia (19 February 2026).
+ * The AlAdhan API (astronomical) says 18 Feb, but the Tunisian Ministry
+ * of Religious Affairs declares 19 Feb — we use the official date.
+ */
+export const RAMADAN_START = new Date(2026, 1, 19); // months are 0-indexed
+export const RAMADAN_DAYS = 30;
+
+/**
  * Parse AlAdhan time string "HH:MM (TZ)" → { hours, minutes } in 24h
  */
 export function parseTime(timeStr: string): { hours: number; minutes: number } {
@@ -125,10 +133,18 @@ export function getFastingDuration(imsak: string, maghrib: string): { duration: 
 }
 
 /**
- * Get the Ramadan day number (1-30) based on Hijri date
+ * Get the Ramadan day number (1-30) based on the official start date.
+ * Returns 0 if Ramadan hasn't started yet, capped at RAMADAN_DAYS.
+ * The hijriDay parameter is kept for backward compatibility but ignored.
  */
-export function getRamadanDay(hijriDay: string): number {
-  return parseInt(hijriDay, 10) || 1;
+export function getRamadanDay(_hijriDay?: string): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = new Date(RAMADAN_START);
+  start.setHours(0, 0, 0, 0);
+  const diff = Math.floor((today.getTime() - start.getTime()) / 86400000);
+  if (diff < 0) return 0;
+  return Math.min(diff + 1, RAMADAN_DAYS);
 }
 
 /**

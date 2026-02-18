@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { Download, Share2, Image } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
+import { RAMADAN_START, RAMADAN_DAYS } from "@/lib/prayer-utils";
 import { dailyDuas } from "@/data/daily-duas";
 import GlassCard from "@/components/ui/GlassCard";
 
@@ -57,11 +58,9 @@ type Tab = "daily" | "iftar" | "generator";
 // ── Utility ──────────────────────────────────
 
 function getRamadanDay(): number {
-  // Approximate: Ramadan 2026 starts March 1
-  const start = new Date(2026, 2, 1);
   const today = new Date();
-  const diff = Math.floor((today.getTime() - start.getTime()) / (86400000));
-  return Math.max(1, Math.min(30, diff + 1));
+  const diff = Math.floor((today.getTime() - RAMADAN_START.getTime()) / 86400000);
+  return Math.max(1, Math.min(RAMADAN_DAYS, diff + 1));
 }
 
 export default function CardsPage() {
