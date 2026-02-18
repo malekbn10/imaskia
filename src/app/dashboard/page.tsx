@@ -59,15 +59,20 @@ export default function DashboardPage() {
   const handleShare = async () => {
     if (!shareRef.current) return;
     try {
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(shareRef.current, {
+      const { toBlob } = await import("html-to-image");
+      const blob = await toBlob(shareRef.current, {
         backgroundColor: "#0A0E1A",
-        scale: 2,
+        pixelRatio: 2,
       });
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.download = `imsakia-dashboard-${todayKey()}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.href = url;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     } catch {
       // Silently fail
     }

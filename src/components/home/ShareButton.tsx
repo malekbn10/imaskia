@@ -22,26 +22,18 @@ export default function ShareButton({ timings, ramadanDay, cityName }: ShareButt
     setLoading(true);
 
     try {
-      // Temporarily make visible for html2canvas capture
       const el = cardRef.current;
       el.style.opacity = "1";
 
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(el, {
-        scale: 2,
-        backgroundColor: "#0A0E1A",
-        logging: false,
-        useCORS: true,
+      const { toBlob } = await import("html-to-image");
+      const blob = await toBlob(el, {
         width: 600,
         height: 900,
+        pixelRatio: 2,
+        backgroundColor: "#0A0E1A",
       });
 
-      // Hide again
       el.style.opacity = "0";
-
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png")
-      );
 
       if (!blob) throw new Error("Failed to create image");
 
@@ -67,7 +59,7 @@ export default function ShareButton({ timings, ramadanDay, cityName }: ShareButt
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch {
-      // User cancelled share or other error — silently ignore
+      // User cancelled share or other error
     } finally {
       setLoading(false);
     }
@@ -84,7 +76,7 @@ export default function ShareButton({ timings, ramadanDay, cityName }: ShareButt
         {t("share.button")}
       </button>
 
-      {/* Off-screen render target for html2canvas */}
+      {/* Off-screen render target */}
       <ShareCard
         ref={cardRef}
         timings={timings}

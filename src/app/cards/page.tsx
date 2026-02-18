@@ -75,14 +75,11 @@ export default function CardsPage() {
 
   const captureCard = async (): Promise<Blob | null> => {
     if (!cardRef.current) return null;
-    const html2canvas = (await import("html2canvas")).default;
-    const canvas = await html2canvas(cardRef.current, {
-      scale: 2,
+    const { toBlob } = await import("html-to-image");
+    return toBlob(cardRef.current, {
+      pixelRatio: 2,
       backgroundColor: "#0A0E1A",
-      logging: false,
-      useCORS: true,
     });
-    return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
   };
 
   const handleDownload = async () => {

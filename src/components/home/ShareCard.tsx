@@ -10,7 +10,7 @@ interface ShareCardProps {
 }
 
 /**
- * Off-screen card rendered at 600x900px for html2canvas capture.
+ * Off-screen card rendered at 600x900px for html-to-image capture.
  * Uses inline styles to ensure consistent rendering.
  */
 const ShareCard = forwardRef<HTMLDivElement, ShareCardProps>(
