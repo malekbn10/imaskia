@@ -4,11 +4,55 @@
  * Docs: CLICTOPAY_INTEGRATION_GUIDE.md
  */
 
+import https from "node:https";
+import http from "node:http";
+
 const CURRENCY_TND = "788";
 
 interface InitPaymentResult {
   orderId: string;
   formUrl: string;
+}
+
+/**
+ * Low-level HTTPS request that can optionally skip TLS verification
+ * for ClicToPay test/sandbox (their test cert chain is broken).
+ */
+function clictoPayFetch(
+  url: string,
+  options: { method?: string; body?: string; headers?: Record<string, string> } = {}
+): Promise<{ json: () => Promise<Record<string, unknown>> }> {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const isTest = parsed.hostname.includes("test.clictopay.com");
+    const transport = parsed.protocol === "https:" ? https : http;
+
+    const reqOptions: https.RequestOptions = {
+      hostname: parsed.hostname,
+      port: parsed.port || (parsed.protocol === "https:" ? 443 : 80),
+      path: parsed.pathname + parsed.search,
+      method: options.method ?? "GET",
+      headers: options.headers ?? {},
+      ...(isTest ? { rejectUnauthorized: false } : {}),
+    };
+
+    const req = transport.request(reqOptions, (res) => {
+      let data = "";
+      res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+      res.on("end", () => {
+        resolve({
+          json: () => Promise.resolve(JSON.parse(data)),
+        });
+      });
+    });
+
+    req.on("error", reject);
+
+    if (options.body) {
+      req.write(options.body);
+    }
+    req.end();
+  });
 }
 
 /**
@@ -42,7 +86,7 @@ export async function initiatePayment(
     failUrl: `${appUrl}/premium?error=payment_failed`,
   });
 
-  const res = await fetch(`${baseUrl}register.do`, {
+  const res = await clictoPayFetch(`${baseUrl}register.do`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params.toString(),
@@ -59,8 +103,8 @@ export async function initiatePayment(
   }
 
   return {
-    orderId: data.orderId,
-    formUrl: data.formUrl,
+    orderId: data.orderId as string,
+    formUrl: data.formUrl as string,
   };
 }
 
@@ -84,12 +128,12 @@ export async function verifyPayment(orderId: string): Promise<boolean> {
     orderId,
   });
 
-  const res = await fetch(
+  const res = await clictoPayFetch(
     `${baseUrl}getOrderStatusExtended.do?${params.toString()}`
   );
 
   const data = await res.json();
-  const status = parseInt(data.orderStatus, 10);
+  const status = parseInt(data.orderStatus as string, 10);
 
   // Status 2 = PAID (successful transaction)
   return status === 2;

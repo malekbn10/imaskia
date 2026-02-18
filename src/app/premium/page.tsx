@@ -38,6 +38,7 @@ export default function PremiumPage() {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubscribe = async (plan: "premium" | "vip") => {
     if (!isAuthenticated) {
@@ -46,6 +47,7 @@ export default function PremiumPage() {
     }
 
     setLoading(plan);
+    setError(null);
     try {
       const res = await fetch("/api/subscription/checkout", {
         method: "POST",
@@ -55,9 +57,11 @@ export default function PremiumPage() {
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        setError(data.error || t("errors.generic"));
       }
     } catch {
-      // Error handled silently
+      setError(t("errors.generic"));
     } finally {
       setLoading(null);
     }
@@ -109,6 +113,13 @@ export default function PremiumPage() {
           ))}
         </div>
       </GlassCard>
+
+      {/* Error */}
+      {error && (
+        <div className="rounded-xl bg-danger/10 border border-danger/30 px-4 py-3 text-sm text-danger">
+          {error}
+        </div>
+      )}
 
       {/* CTAs */}
       <div className="space-y-3">
