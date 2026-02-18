@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, Compass, BookOpen, MoreHorizontal } from "lucide-react";
+import { Home, Calendar, Compass, LayoutDashboard, MoreHorizontal } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/context";
 
 const navItems = [
   { href: "/", icon: Home, labelKey: "nav.home" },
   { href: "/calendar", icon: Calendar, labelKey: "nav.calendar" },
+  { href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.dashboard" },
   { href: "/qibla", icon: Compass, labelKey: "nav.qibla" },
-  { href: "/adhkar", icon: BookOpen, labelKey: "nav.adhkar" },
-  { href: "/about", icon: MoreHorizontal, labelKey: "nav.more" },
+  { href: "/more", icon: MoreHorizontal, labelKey: "nav.more" },
 ];
 
 export default function BottomNav() {

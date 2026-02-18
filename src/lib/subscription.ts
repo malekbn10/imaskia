@@ -1,5 +1,3 @@
-import { prisma } from "@/lib/prisma";
-
 export type Plan = "free" | "premium" | "vip";
 
 interface SubscriptionStatus {
@@ -13,6 +11,8 @@ interface SubscriptionStatus {
  * Returns "free" for users without a subscription or with expired ones.
  */
 export async function checkSubscription(userId: string): Promise<SubscriptionStatus> {
+  const { prisma } = await import("@/lib/prisma");
+
   const sub = await prisma.subscription.findUnique({
     where: { userId },
   });

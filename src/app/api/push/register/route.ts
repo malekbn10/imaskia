@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 /**
  * POST /api/push/register — Register a push subscription (auth required)
@@ -17,6 +18,8 @@ export async function POST(req: NextRequest) {
   if (!endpoint || !keys?.p256dh || !keys?.auth) {
     return NextResponse.json({ error: "Invalid subscription" }, { status: 400 });
   }
+
+  const { prisma } = await import("@/lib/prisma");
 
   await prisma.pushToken.upsert({
     where: { endpoint },
@@ -51,6 +54,8 @@ export async function DELETE(req: NextRequest) {
   if (!endpoint) {
     return NextResponse.json({ error: "Missing endpoint" }, { status: 400 });
   }
+
+  const { prisma } = await import("@/lib/prisma");
 
   await prisma.pushToken.deleteMany({
     where: { endpoint, userId: session.user.id },

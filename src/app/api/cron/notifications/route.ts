@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { sendPushNotification } from "@/lib/web-push";
+
+// Force dynamic — never evaluate at build time
+export const dynamic = "force-dynamic";
 
 const PRAYER_KEYS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"] as const;
 const PRAYER_NOTIFY_FIELDS = {
@@ -24,6 +26,9 @@ export async function GET(req: NextRequest) {
 
   const now = new Date();
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+  // Lazy import to avoid build-time Prisma connection
+  const { prisma } = await import("@/lib/prisma");
 
   // Get all users with push tokens and their subscriptions
   const users = await prisma.user.findMany({

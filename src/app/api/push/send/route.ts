@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { sendPushNotification, PushPayload } from "@/lib/web-push";
+
+export const dynamic = "force-dynamic";
 
 /**
  * POST /api/push/send — Internal endpoint to send push to a specific user
@@ -16,6 +17,8 @@ export async function POST(req: NextRequest) {
     userId: string;
     payload: PushPayload;
   };
+
+  const { prisma } = await import("@/lib/prisma");
 
   const tokens = await prisma.pushToken.findMany({
     where: { userId },

@@ -93,7 +93,7 @@ model Subscription {
   userId      String   @unique
   plan        String   @default("free") // "free" | "premium" | "vip"
   status      String   @default("active") // "active" | "cancelled" | "expired"
-  konnectId   String?  // Konnect payment reference
+  paymentRef  String?  // ClicToPay order reference
   expiresAt   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

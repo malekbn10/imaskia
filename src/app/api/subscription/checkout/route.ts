@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { createCheckoutSession } from "@/lib/konnect";
+import { initiatePayment } from "@/lib/clictopay";
+
+export const dynamic = "force-dynamic";
 
 const PLAN_PRICES: Record<string, number> = {
-  premium: 4900, // 4.9 TND in millimes
-  vip: 9900,     // 9.9 TND in millimes
+  premium: 4.9,  // TND
+  vip: 9.9,      // TND
 };
 
 /**
- * POST /api/subscription/checkout — Create a Konnect checkout session
+ * POST /api/subscription/checkout — Create a ClicToPay payment session
  */
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -22,20 +24,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-
   try {
-    const checkout = await createCheckoutSession({
-      amount: PLAN_PRICES[plan],
-      userId: session.user.id,
-      plan: plan as "premium" | "vip",
-      successUrl: `${appUrl}/premium/success?plan=${plan}`,
-      failUrl: `${appUrl}/premium?error=payment_failed`,
-    });
+    const orderNumber = `${session.user.id}-${plan}-${Date.now()}`;
 
-    return NextResponse.json({ url: checkout.payUrl, ref: checkout.paymentRef });
+    const { orderId, formUrl } = await initiatePayment(
+      PLAN_PRICES[plan],
+      orderNumber
+    );
+
+    return NextResponse.json({ url: formUrl, orderId });
   } catch (error) {
     console.error("Checkout error:", error);
-    return NextResponse.json({ error: "Payment initialization failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Payment initialization failed" },
+      { status: 500 }
+    );
   }
 }
