@@ -16,9 +16,7 @@ export default function InstallPrompt() {
   const { lang } = useTranslation();
 
   useEffect(() => {
-    const count = incrementInstallCount();
-    // Only show on 2nd+ visit
-    if (count < 2) return;
+    incrementInstallCount();
 
     const handler = (e: Event) => {
       e.preventDefault();
