@@ -33,7 +33,8 @@ export async function POST(req: NextRequest) {
 
     const { orderId, formUrl } = await initiatePayment(
       PLAN_PRICES[plan],
-      orderNumber
+      orderNumber,
+      plan
     );
 
     return NextResponse.json({ url: formUrl, orderId });

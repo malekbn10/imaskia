@@ -63,7 +63,8 @@ function clictoPayFetch(
  */
 export async function initiatePayment(
   amountTnd: number,
-  orderNumber: string
+  orderNumber: string,
+  plan: string
 ): Promise<InitPaymentResult> {
   const baseUrl = process.env.CLICTOPAY_BASE_URL;
   const userName = process.env.CLICTOPAY_USERNAME;
@@ -82,7 +83,7 @@ export async function initiatePayment(
     orderNumber,
     amount: amountMillimes.toString(),
     currency: CURRENCY_TND,
-    returnUrl: `${appUrl}/premium/success`,
+    returnUrl: `${appUrl}/premium/success?plan=${plan}`,
     failUrl: `${appUrl}/premium?error=payment_failed`,
   });
 

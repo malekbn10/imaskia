@@ -56,6 +56,9 @@ export default function PremiumPage() {
       });
       const data = await res.json();
       if (data.url) {
+        // Save orderId for verification after ClicToPay redirect
+        sessionStorage.setItem("clictopay_orderId", data.orderId);
+        sessionStorage.setItem("clictopay_plan", plan);
         window.location.href = data.url;
       } else {
         setError(data.error || t("errors.generic"));
