@@ -25,7 +25,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const orderNumber = `${session.user.id}-${plan}-${Date.now()}`;
+    // ClicToPay orderNumber: max 32 chars, alphanumeric only
+    const uid = session.user.id.slice(-8);
+    const ts = Date.now().toString(36);
+    const p = plan === "premium" ? "P" : "V";
+    const orderNumber = `IMK${p}${uid}${ts}`.slice(0, 32);
 
     const { orderId, formUrl } = await initiatePayment(
       PLAN_PRICES[plan],
