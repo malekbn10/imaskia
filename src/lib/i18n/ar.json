@@ -91,6 +91,8 @@
     "comingSoon": "قريبًا",
     "subscribe": "اشترك الآن",
     "currentPlan": "باقتك الحالية",
+    "activePlan": "الباقة الحالية",
+    "upgrade": "ترقية",
     "features": {
       "prayerTimes": "أوقات الصلاة",
       "countdown": "العد التنازلي",

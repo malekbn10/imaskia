@@ -20,7 +20,11 @@ interface InitPaymentResult {
  */
 function clictoPayFetch(
   url: string,
-  options: { method?: string; body?: string; headers?: Record<string, string> } = {}
+  options: {
+    method?: string;
+    body?: string;
+    headers?: Record<string, string>;
+  } = {},
 ): Promise<{ json: () => Promise<Record<string, unknown>> }> {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
@@ -38,7 +42,9 @@ function clictoPayFetch(
 
     const req = transport.request(reqOptions, (res) => {
       let data = "";
-      res.on("data", (chunk: Buffer) => { data += chunk.toString(); });
+      res.on("data", (chunk: Buffer) => {
+        data += chunk.toString();
+      });
       res.on("end", () => {
         resolve({
           json: () => Promise.resolve(JSON.parse(data)),
@@ -64,7 +70,7 @@ function clictoPayFetch(
 export async function initiatePayment(
   amountTnd: number,
   orderNumber: string,
-  plan: string
+  plan: string,
 ): Promise<InitPaymentResult> {
   const baseUrl = process.env.CLICTOPAY_BASE_URL;
   const userName = process.env.CLICTOPAY_USERNAME;
@@ -87,11 +93,7 @@ export async function initiatePayment(
     failUrl: `${appUrl}/premium?error=payment_failed`,
   });
 
-  const res = await clictoPayFetch(`${baseUrl}register.do`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString(),
-  });
+  const res = await clictoPayFetch(`${baseUrl}register.do?${params.toString()}`);
 
   const data = await res.json();
 
@@ -130,7 +132,7 @@ export async function verifyPayment(orderId: string): Promise<boolean> {
   });
 
   const res = await clictoPayFetch(
-    `${baseUrl}getOrderStatusExtended.do?${params.toString()}`
+    `${baseUrl}getOrderStatusExtended.do?${params.toString()}`,
   );
 
   const data = await res.json();

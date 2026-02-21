@@ -91,6 +91,8 @@
     "comingSoon": "Bientôt disponible",
     "subscribe": "S'abonner maintenant",
     "currentPlan": "Votre offre actuelle",
+    "activePlan": "Offre actuelle",
+    "upgrade": "Passer au supérieur",
     "features": {
       "prayerTimes": "Horaires de prière",
       "countdown": "Compte à rebours",
